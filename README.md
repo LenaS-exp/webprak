@@ -24,7 +24,7 @@
 
 ## Схема базы данных
 
-![Alt text](database/db.jpeg)
+![Alt text](database/db.jpg)
 
 ## Схема Страниц
 
