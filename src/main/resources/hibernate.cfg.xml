@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- Database connection settings -->
+        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="connection.url">jdbc:postgresql://localhost:5432/Website</property>
+        <property name="connection.username">postgres</property>
+        <property name="connection.password">18990800pw</property>
+        <property name="show_sql">true</property>
+        <property name="hibernate.current_session_context_class">org.hibernate.context.internal.ThreadLocalSessionContext</property>
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>
+
+        <mapping class="ru.msu.cmc.webprak.model.entity.Aircraft"/>
+        <mapping class="ru.msu.cmc.webprak.model.entity.Airlines"/>
+        <mapping class="ru.msu.cmc.webprak.model.entity.Airports"/>
+        <mapping class="ru.msu.cmc.webprak.model.entity.BonusCard"/>
+        <mapping class="ru.msu.cmc.webprak.model.entity.Flights"/>
+        <mapping class="ru.msu.cmc.webprak.model.entity.Tickets"/>
+        <mapping class="ru.msu.cmc.webprak.model.entity.Passangers"/>
+
+    </session-factory>
+</hibernate-configuration>
