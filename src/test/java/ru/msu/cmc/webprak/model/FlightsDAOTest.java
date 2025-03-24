@@ -13,8 +13,6 @@ import ru.msu.cmc.webprak.model.entity.Airports;
 import ru.msu.cmc.webprak.model.entity.Flights;
 import ru.msu.cmc.webprak.utils.TimeConvertUtil;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,6 +44,10 @@ public class FlightsDAOTest {
 
         this.aircraft1 = new Aircraft();
         this.aircraft1.setModelName("TestName1" + this.runId);
+        this.aircraft1.setMaxRange(1.0);
+        this.aircraft1.setCruisingSpeed(2.0);
+        this.aircraft1.setMaxAltitude(3.0);
+
 
         this.flights1 = new Flights();
         this.flights1.setAirlineId(airlines1);
@@ -69,6 +71,9 @@ public class FlightsDAOTest {
 
         this.aircraft2 = new Aircraft();
         this.aircraft2.setModelName("TestName2" + this.runId);
+        this.aircraft2.setMaxRange(1.0);
+        this.aircraft2.setCruisingSpeed(2.0);
+        this.aircraft2.setMaxAltitude(3.0);
 
         this.flights2 = new Flights();
         this.flights2.setAirlineId(airlines2);

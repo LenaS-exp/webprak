@@ -38,17 +38,17 @@ public class AircraftDAOImpl extends BaseDAOImpl<Aircraft> implements AircraftDA
 
         if (filter.getMaxRange() != null) {
             Double maxRange = filter.getMaxRange();
-            predicates.add(builder.le(builder.literal(maxRange), root.get("maxRange")));
+            predicates.add(builder.equal(builder.literal(maxRange), root.get("maxRange")));
         }
 
         if (filter.getMaxAltitude() != null) {
             Double altitude = filter.getMaxAltitude();
-            predicates.add(builder.le(builder.literal(altitude), root.get("maxAltitude")));
+            predicates.add(builder.equal(builder.literal(altitude), root.get("maxAltitude")));
         }
 
         if (filter.getCruisingSpeed() != null) {
             Double speed = filter.getCruisingSpeed();
-            predicates.add(builder.le(builder.literal(speed), root.get("cruisingSpeed")));
+            predicates.add(builder.equal(builder.literal(speed), root.get("cruisingSpeed")));
         }
 
         if (predicates.size() != 0)

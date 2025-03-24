@@ -122,7 +122,6 @@ public class PassangersDAOTest {
         expected.add(this.passangersTest2);
 
         Set<Passangers> got = new HashSet<>(all);
-
         assertEquals(expected, got);
 
         Collection<Passangers> onlyTest1 = this.dao.getPassangersByFilter(

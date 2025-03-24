@@ -42,6 +42,9 @@ public class TicketsDAOTest {
 
         this.aircraft1 = new Aircraft();
         this.aircraft1.setModelName("TestName1" + this.runId);
+        this.aircraft1.setMaxRange(1.0);
+        this.aircraft1.setCruisingSpeed(2.0);
+        this.aircraft1.setMaxAltitude(3.0);
 
         this.flights1 = new Flights();
         this.flights1.setAirlineId(airlines1);
@@ -52,6 +55,7 @@ public class TicketsDAOTest {
         this.flights1.setTimeArr(TimeConvertUtil.fromString("2022-04-12T00:02"));
         this.flights1.setSeatNum(11);
         this.flights1.setAvailableSeatNum(11);
+
 
         this.passangers1 = new Passangers();
         this.passangers1.setName("TestName1" + this.runId);
@@ -81,6 +85,9 @@ public class TicketsDAOTest {
 
         this.aircraft2 = new Aircraft();
         this.aircraft2.setModelName("TestName2" + this.runId);
+        this.aircraft2.setMaxRange(1.0);
+        this.aircraft2.setCruisingSpeed(2.0);
+        this.aircraft2.setMaxAltitude(3.0);
 
         this.flights2 = new Flights();
         this.flights2.setAirlineId(airlines2);
@@ -108,6 +115,7 @@ public class TicketsDAOTest {
         this.tickets2.setTicketPrice(4.0);
 
 
+
         AirlinesDAO airlinesDAO = DAOFactory.getInstance().getAirlinesDAO();
         airlinesDAO.add(this.airlines1);
         airlinesDAO.add(this.airlines2);
@@ -130,6 +138,7 @@ public class TicketsDAOTest {
 
         this.dao.add(this.tickets1);
         this.dao.add(this.tickets2);
+
     }
 
     @AfterEach

@@ -28,7 +28,7 @@ public class BonusCard {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "passanger_id", nullable = false)
+    @JoinColumn(name = "passenger_id", nullable = false)
     @ToString.Exclude
     private Passangers passangerId;
 
@@ -50,14 +50,13 @@ public class BonusCard {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof BonusCard)) return false;
-        BonusCard that = (BonusCard) o;
-        return getId().equals(that.getId()) && getPassangerId().equals(that.getPassangerId()) && getAirlineId().equals(that.getAirlineId()) && getTotalkm().equals(that.getTotalkm()) && getUsedkm().equals(that.getUsedkm());
+        if (!(o instanceof BonusCard that)) return false;
+        return getId().equals(that.getId()) && getPassangerId().equals(that.getPassangerId()) && getCardStatus().equals(that.getCardStatus()) && getAirlineId().equals(that.getAirlineId()) && getTotalkm().equals(that.getTotalkm()) && getUsedkm().equals(that.getUsedkm());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getPassangerId(), getAirlineId(), getTotalkm(), getUsedkm());
+        return Objects.hash(getId(), getPassangerId(), getAirlineId(), getCardStatus(), getTotalkm(), getUsedkm());
     }
 
 }

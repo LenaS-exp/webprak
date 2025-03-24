@@ -72,7 +72,10 @@ dependencies {
 	testImplementation 'org.testng:testng:6.14.3'
 }
 
-tasks.named('test') {
+tasks.withType(Test) {
 	useJUnitPlatform()
-	useTestNG()
+
+	testLogging {     // This is for logging and can be removed.
+		events("passed", "skipped", "failed")
+	}
 }

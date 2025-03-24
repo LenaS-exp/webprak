@@ -35,6 +35,11 @@ public class TicketsDAOImpl extends BaseDAOImpl<Tickets> implements TicketsDAO {
             String pattern = "%" + filter.getTicketStatus() + "%";
             predicates.add(builder.like(root.get("ticketStatus"), pattern));
         }
+        if (filter.getFareConditions() != null) {
+            String pattern = "%" + filter.getFareConditions() + "%";
+            predicates.add(builder.like(root.get("fareConditions"), pattern));
+        }
+
         if (filter.getPassangerId() != null) {
             Integer passangerId = filter.getPassangerId();
             predicates.add(builder.equal(root.get("passangerId"), passangerId));
@@ -44,6 +49,7 @@ public class TicketsDAOImpl extends BaseDAOImpl<Tickets> implements TicketsDAO {
             Double priceMin = filter.getPriceMin();
             predicates.add(builder.le(builder.literal(priceMin), root.get("ticketPrice")));
         }
+
         if (filter.getPriceMax() != null) {
             Double priceMax = filter.getPriceMax();
             predicates.add(builder.ge(builder.literal(priceMax), root.get("ticketPrice")));

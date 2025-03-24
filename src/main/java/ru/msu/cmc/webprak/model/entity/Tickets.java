@@ -48,14 +48,17 @@ public class Tickets {
 
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
-        if (!(o instanceof Tickets)) return false;
-        Tickets tickets = (Tickets) o;
+
+        if (!(o instanceof Tickets tickets)) return false;
+
         return getId().equals(tickets.getId()) && getFlightId().equals(tickets.getFlightId()) && getTicketStatus().equals(tickets.getTicketStatus()) && getPassangerId().equals(tickets.getPassangerId()) && getFareConditions().equals(tickets.getFareConditions()) && getTicketPrice().equals(tickets.getTicketPrice());
     }
 
     @Override
     public int hashCode() {
+
         return Objects.hash(getId(), getFlightId(), getTicketStatus(), getPassangerId(), getFareConditions(), getTicketPrice());
     }
 }

@@ -43,8 +43,10 @@ public class BonusCardDAOTest {
         this.passangers1.setEmail("test1" + this.runId + "@mail.com");
         this.passangers1.setPhoneNumber("+1" + this.runId);
         this.passangers1.setPassword("TestPassword1" + this.runId);
+        this.passangers1.setPassword(this.runId);
 
         this.bonusCard1 = new BonusCard();
+        this.bonusCard1.setCardStatus("TestStatus1" + this.runId);
         this.bonusCard1.setPassangerId(passangers1);
         this.bonusCard1.setAirlineId(airlines1);
         this.bonusCard1.setTotalkm(11);
@@ -62,8 +64,10 @@ public class BonusCardDAOTest {
         this.passangers2.setAddress("TestAddress2" + this.runId);
         this.passangers2.setEmail("test2" + this.runId + "@mail.com");
         this.passangers2.setPhoneNumber("+2" + this.runId);
+        this.passangers2.setPassword(this.runId);
 
         this.bonusCard2 = new BonusCard();
+        this.bonusCard2.setCardStatus("TestStatus2" + this.runId);
         this.bonusCard2.setPassangerId(passangers2);
         this.bonusCard2.setAirlineId(airlines2);
         this.bonusCard2.setTotalkm(12);
