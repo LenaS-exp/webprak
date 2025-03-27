@@ -32,18 +32,17 @@ public class FlightsDAOTest {
     @BeforeEach
     public void setUp() {
         this.dao = DAOFactory.getInstance().getFlightsDAO();
-        this.runId = UUID.randomUUID().toString();
 
         this.airlines1 = new Airlines();
-        this.airlines1.setAirlineName("TestName1" + this.runId);
-        this.airlines1.setAirlineEmail("test1" + this.runId + "@mail.com");
+        this.airlines1.setAirlineName("TestName1");
+        this.airlines1.setAirlineEmail("test1@mail.com");
 
         this.airports1 = new Airports();
-        this.airports1.setAirportName("TestName1" + this.runId);
-        this.airports1.setAirportCity("TestCity1" + this.runId);
+        this.airports1.setAirportName("TestName1");
+        this.airports1.setAirportCity("TestCity1");
 
         this.aircraft1 = new Aircraft();
-        this.aircraft1.setModelName("TestName1" + this.runId);
+        this.aircraft1.setModelName("TestName1");
         this.aircraft1.setMaxRange(1.0);
         this.aircraft1.setCruisingSpeed(2.0);
         this.aircraft1.setMaxAltitude(3.0);
@@ -61,16 +60,16 @@ public class FlightsDAOTest {
 
 
         this.airlines2 = new Airlines();
-        this.airlines2.setAirlineName("TestName2" + this.runId);
-        this.airlines2.setAirlineEmail("test2" + this.runId + "@mail.com");
+        this.airlines2.setAirlineName("TestName2");
+        this.airlines2.setAirlineEmail("test2@mail.com");
 
 
         this.airports2 = new Airports();
-        this.airports2.setAirportName("TestName2" + this.runId);
-        this.airports2.setAirportCity("TestCity2" + this.runId);
+        this.airports2.setAirportName("TestName2");
+        this.airports2.setAirportCity("TestCity2");
 
         this.aircraft2 = new Aircraft();
-        this.aircraft2.setModelName("TestName2" + this.runId);
+        this.aircraft2.setModelName("TestName2");
         this.aircraft2.setMaxRange(1.0);
         this.aircraft2.setCruisingSpeed(2.0);
         this.aircraft2.setMaxAltitude(3.0);
@@ -119,7 +118,6 @@ public class FlightsDAOTest {
         aircraftDAO.delete(this.aircraft2);
 
         this.dao = null;
-        this.runId = null;
         this.airlines1 = null;
         this.airlines2 = null;
         this.airports1 = null;
@@ -201,7 +199,15 @@ public class FlightsDAOTest {
         expected.add(this.flights2);
 
         Set<Flights> got = new HashSet<>(all);
+        assertEquals(expected, got);
 
+        all = this.dao.getFlightsByFilter(
+                FlightsDAO.getFilterBuilder()
+                        .seatMin(null)
+                        .build()
+        );
+
+        got = new HashSet<>(all);
         assertEquals(expected, got);
 
         Collection<Flights> onlyTest1 = this.dao.getFlightsByFilter(

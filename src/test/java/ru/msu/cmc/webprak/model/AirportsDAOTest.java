@@ -18,15 +18,14 @@ public class AirportsDAOTest {
     @BeforeEach
     public void setUp() {
         this.dao = DAOFactory.getInstance().getAirportsDAO();
-        this.runId = UUID.randomUUID().toString();
 
         this.airportsTest1 = new Airports();
-        this.airportsTest1.setAirportName("TestName1" + this.runId);
-        this.airportsTest1.setAirportCity("TestCity1" + this.runId);
+        this.airportsTest1.setAirportName("TestName1");
+        this.airportsTest1.setAirportCity("TestCity1");
 
         this.airportsTest2 = new Airports();
-        this.airportsTest2.setAirportName("TestName2" + this.runId);
-        this.airportsTest2.setAirportCity("TestCity2" + this.runId);
+        this.airportsTest2.setAirportName("TestName2");
+        this.airportsTest2.setAirportCity("TestCity2");
 
         this.dao.add(this.airportsTest1);
         this.dao.add(this.airportsTest2);
@@ -38,7 +37,6 @@ public class AirportsDAOTest {
         this.dao.delete(airportsTest2);
 
         this.dao = null;
-        this.runId = null;
         this.airportsTest1 = null;
         this.airportsTest2 = null;
     }
@@ -47,7 +45,7 @@ public class AirportsDAOTest {
     public void testGetByName() {
         Collection<Airports> all = this.dao.getAirportsByFilter(
                 AirportsDAO.getFilterBuilder()
-                        .airportName(this.runId)
+                        .airportName(null)
                         .build()
         );
         Set<Airports> expected = new HashSet<>();
@@ -60,7 +58,7 @@ public class AirportsDAOTest {
 
         Collection<Airports> test1 = this.dao.getAirportsByFilter(
                 AirportsDAO.getFilterBuilder()
-                        .airportName("TestName1" + this.runId)
+                        .airportName("TestName1")
                         .build()
         );
 
@@ -76,7 +74,7 @@ public class AirportsDAOTest {
     public void testGetByCity() {
         Collection<Airports> all = this.dao.getAirportsByFilter(
                 AirportsDAO.getFilterBuilder()
-                        .airportCity(this.runId)
+                        .airportCity(null)
                         .build()
         );
         Set<Airports> expected = new HashSet<>();
@@ -89,7 +87,7 @@ public class AirportsDAOTest {
 
         Collection<Airports> test1 = this.dao.getAirportsByFilter(
                 AirportsDAO.getFilterBuilder()
-                        .airportCity("TestCity1" + this.runId)
+                        .airportCity("TestCity1")
                         .build()
         );
 

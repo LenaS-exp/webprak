@@ -30,23 +30,22 @@ public class BonusCardDAOTest {
     @BeforeEach
     public void setUp() {
         this.dao = DAOFactory.getInstance().getBonusCardDAO();
-        this.runId = UUID.randomUUID().toString();
 
         this.airlines1 = new Airlines();
-        this.airlines1.setAirlineName("TestName1" + this.runId);
-        this.airlines1.setAirlineEmail("test1" + this.runId + "@mail.com");
+        this.airlines1.setAirlineName("TestName1");
+        this.airlines1.setAirlineEmail("test1@mail.com");
 
         this.passangers1 = new Passangers();
-        this.passangers1.setName("TestName1" + this.runId);
-        this.passangers1.setSurname("TestSurname1" + this.runId);
-        this.passangers1.setAddress("TestAddress1" + this.runId);
-        this.passangers1.setEmail("test1" + this.runId + "@mail.com");
-        this.passangers1.setPhoneNumber("+1" + this.runId);
-        this.passangers1.setPassword("TestPassword1" + this.runId);
-        this.passangers1.setPassword(this.runId);
+        this.passangers1.setName("TestName1");
+        this.passangers1.setSurname("TestSurname1");
+        this.passangers1.setAddress("TestAddress1");
+        this.passangers1.setEmail("test1@mail.com");
+        this.passangers1.setPhoneNumber("+1");
+        this.passangers1.setPassword("TestPassword1");
+        this.passangers1.setPassword("212");
 
         this.bonusCard1 = new BonusCard();
-        this.bonusCard1.setCardStatus("TestStatus1" + this.runId);
+        this.bonusCard1.setCardStatus("TestStatus1");
         this.bonusCard1.setPassangerId(passangers1);
         this.bonusCard1.setAirlineId(airlines1);
         this.bonusCard1.setTotalkm(11);
@@ -54,20 +53,20 @@ public class BonusCardDAOTest {
 
 
         this.airlines2 = new Airlines();
-        this.airlines2.setAirlineName("TestName2" + this.runId);
-        this.airlines2.setAirlineEmail("test2" + this.runId + "@mail.com");
+        this.airlines2.setAirlineName("TestName2");
+        this.airlines2.setAirlineEmail("test2 @mal.com");
         
 
         this.passangers2 = new Passangers();
-        this.passangers2.setName("TestName2" + this.runId);
-        this.passangers2.setSurname("TestSurname2" + this.runId);
-        this.passangers2.setAddress("TestAddress2" + this.runId);
-        this.passangers2.setEmail("test2" + this.runId + "@mail.com");
-        this.passangers2.setPhoneNumber("+2" + this.runId);
-        this.passangers2.setPassword(this.runId);
+        this.passangers2.setName("TestName2");
+        this.passangers2.setSurname("TestSurname2");
+        this.passangers2.setAddress("TestAddress2");
+        this.passangers2.setEmail("test2@mail.com");
+        this.passangers2.setPhoneNumber("+2");
+        this.passangers2.setPassword("234");
 
         this.bonusCard2 = new BonusCard();
-        this.bonusCard2.setCardStatus("TestStatus2" + this.runId);
+        this.bonusCard2.setCardStatus("TestStatus2");
         this.bonusCard2.setPassangerId(passangers2);
         this.bonusCard2.setAirlineId(airlines2);
         this.bonusCard2.setTotalkm(12);
@@ -99,7 +98,6 @@ public class BonusCardDAOTest {
         passangersDAO.delete(this.passangers2);
 
         this.dao = null;
-        this.runId = null;
         this.airlines1 = null;
         this.airlines2 = null;
         this.passangers1 = null;
@@ -153,6 +151,15 @@ public class BonusCardDAOTest {
 
         assertEquals(expected, got);
 
+        all = this.dao.getBonusCardByFilter(
+                BonusCardDAO.getFilterBuilder()
+                        .usedkmMin(null)
+                        .build()
+        );
+
+        got = new HashSet<>(all);
+        assertEquals(expected, got);
+
         Collection<BonusCard> onlyTest1 = this.dao.getBonusCardByFilter(
                 BonusCardDAO.getFilterBuilder()
                         .usedkmMax(11)
@@ -165,5 +172,7 @@ public class BonusCardDAOTest {
         got = new HashSet<>(onlyTest1);
 
         assertEquals(expected, got);
+
+
     }
 }

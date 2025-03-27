@@ -16,6 +16,26 @@ plugins {
 	id 'java'
 }
 
+plugins {
+	id 'jacoco'
+}
+
+jacoco {
+	toolVersion = "0.8.7"
+}
+
+test {
+	finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+	dependsOn test
+	reports {
+		xml.required = true
+		html.required = true
+	}
+}
+
 group = 'ru.msu.cmc'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'

@@ -18,23 +18,22 @@ public class PassangersDAOTest {
     @BeforeEach
     public void setUp() {
         this.dao = DAOFactory.getInstance().getPassangersDAO();
-        this.runId = UUID.randomUUID().toString();
 
         this.passangersTest1 = new Passangers();
-        this.passangersTest1.setName("TestName1" + this.runId);
-        this.passangersTest1.setSurname("TestSurname1" + this.runId);
-        this.passangersTest1.setAddress("TestAddress1" + this.runId);
-        this.passangersTest1.setEmail("test1" + this.runId + "@mail.com");
-        this.passangersTest1.setPhoneNumber("+1" + this.runId);
-        this.passangersTest1.setPassword("TestPassword1" + this.runId);
+        this.passangersTest1.setName("TestName1");
+        this.passangersTest1.setSurname("TestSurname1");
+        this.passangersTest1.setAddress("TestAddress1");
+        this.passangersTest1.setEmail("test1" + "@mail.com");
+        this.passangersTest1.setPhoneNumber("+1");
+        this.passangersTest1.setPassword("TestPassword1");
 
         this.passangersTest2 = new Passangers();
-        this.passangersTest2.setName("TestName2" + this.runId);
-        this.passangersTest2.setSurname("TestSurname2" + this.runId);
-        this.passangersTest2.setAddress("TestAddress2" + this.runId);
-        this.passangersTest2.setEmail("test2" + this.runId + "@mail.com");
-        this.passangersTest2.setPhoneNumber("+2" + this.runId);
-        this.passangersTest2.setPassword("TestPassword2" + this.runId);
+        this.passangersTest2.setName("TestName2");
+        this.passangersTest2.setSurname("TestSurname2");
+        this.passangersTest2.setAddress("TestAddress2");
+        this.passangersTest2.setEmail("test2" + "@mail.com");
+        this.passangersTest2.setPhoneNumber("+2");
+        this.passangersTest2.setPassword("TestPassword2");
 
         this.dao.add(this.passangersTest1);
         this.dao.add(this.passangersTest2);
@@ -46,7 +45,6 @@ public class PassangersDAOTest {
         this.dao.delete(this.passangersTest2);
 
         this.dao = null;
-        this.runId = null;
         this.passangersTest1 = null;
         this.passangersTest2 = null;
     }
@@ -55,7 +53,7 @@ public class PassangersDAOTest {
     public void testGetByName() {
         Collection<Passangers> all = this.dao.getPassangersByFilter(
                 PassangersDAO.getFilterBuilder()
-                        .name(this.runId)
+                        .name(null)
                         .build()
         );
         Set<Passangers> expected = new HashSet<>();
@@ -68,7 +66,7 @@ public class PassangersDAOTest {
 
         Collection<Passangers> onlyTest1 = this.dao.getPassangersByFilter(
                 PassangersDAO.getFilterBuilder()
-                        .name("TestName1" + this.runId)
+                        .name("TestName1")
                         .build()
         );
 
@@ -84,7 +82,7 @@ public class PassangersDAOTest {
     public void testGetBySurname() {
         Collection<Passangers> all = this.dao.getPassangersByFilter(
                 PassangersDAO.getFilterBuilder()
-                        .surname(this.runId)
+                        .surname(null)
                         .build()
         );
         Set<Passangers> expected = new HashSet<>();
@@ -97,7 +95,7 @@ public class PassangersDAOTest {
 
         Collection<Passangers> onlyTest1 = this.dao.getPassangersByFilter(
                 PassangersDAO.getFilterBuilder()
-                        .surname("TestSurname1" + this.runId)
+                        .surname("TestSurname1")
                         .build()
         );
 
@@ -114,7 +112,7 @@ public class PassangersDAOTest {
     public void testGetByAddress() {
         Collection<Passangers> all = this.dao.getPassangersByFilter(
                 PassangersDAO.getFilterBuilder()
-                        .address(this.runId)
+                        .address(null)
                         .build()
         );
         Set<Passangers> expected = new HashSet<>();
@@ -126,7 +124,7 @@ public class PassangersDAOTest {
 
         Collection<Passangers> onlyTest1 = this.dao.getPassangersByFilter(
                 PassangersDAO.getFilterBuilder()
-                        .address("TestAddress1" + this.runId)
+                        .address("TestAddress1")
                         .build()
         );
 
@@ -142,7 +140,7 @@ public class PassangersDAOTest {
     public void testGetByEmail() {
         Collection<Passangers> all = this.dao.getPassangersByFilter(
                 PassangersDAO.getFilterBuilder()
-                        .email(this.runId)
+                        .email(null)
                         .build()
         );
         Set<Passangers> expected = new HashSet<>();
@@ -155,7 +153,7 @@ public class PassangersDAOTest {
 
         Collection<Passangers> onlyTest1 = this.dao.getPassangersByFilter(
                 PassangersDAO.getFilterBuilder()
-                        .email("test1" + this.runId)
+                        .email("test1")
                         .build()
         );
 
@@ -171,7 +169,7 @@ public class PassangersDAOTest {
     public void testGetByPhoneNumber() {
         Collection<Passangers> all = this.dao.getPassangersByFilter(
                 PassangersDAO.getFilterBuilder()
-                        .phoneNumber(this.runId)
+                        .phoneNumber(null)
                         .build()
         );
         Set<Passangers> expected = new HashSet<>();
@@ -184,7 +182,7 @@ public class PassangersDAOTest {
 
         Collection<Passangers> onlyTest1 = this.dao.getPassangersByFilter(
                 PassangersDAO.getFilterBuilder()
-                        .phoneNumber("+1" + this.runId)
+                        .phoneNumber("+1")
                         .build()
         );
 

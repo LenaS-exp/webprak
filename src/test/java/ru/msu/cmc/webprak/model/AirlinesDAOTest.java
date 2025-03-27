@@ -18,15 +18,14 @@ public class AirlinesDAOTest {
     @BeforeEach
     public void setUp() {
         this.dao = DAOFactory.getInstance().getAirlinesDAO();
-        this.runId = UUID.randomUUID().toString();
 
         this.airlinesTest1 = new Airlines();
-        this.airlinesTest1.setAirlineName("TestName1" + this.runId);
-        this.airlinesTest1.setAirlineEmail("test1" + this.runId + "@mail.com");
+        this.airlinesTest1.setAirlineName("TestName1");
+        this.airlinesTest1.setAirlineEmail("test1@mail.com");
 
         this.airlinesTest2 = new Airlines();
-        this.airlinesTest2.setAirlineName("TestName2" + this.runId);
-        this.airlinesTest2.setAirlineEmail("test2" + this.runId + "@mail.com");
+        this.airlinesTest2.setAirlineName("TestName2");
+        this.airlinesTest2.setAirlineEmail("test2@mail.com");
 
 
         this.dao.add(this.airlinesTest1);
@@ -39,7 +38,6 @@ public class AirlinesDAOTest {
         this.dao.delete(this.airlinesTest2);
 
         this.dao = null;
-        this.runId = null;
         this.airlinesTest1 = null;
         this.airlinesTest2 = null;
     }
@@ -48,7 +46,7 @@ public class AirlinesDAOTest {
     public void testGetByName() {
         Collection<Airlines> allTestNames = this.dao.getAirlinesByFilter(
                 AirlinesDAO.getFilterBuilder()
-                        .airlineName(this.runId)
+                        .airlineName(null)
                         .build()
         );
         Set<Airlines> expected = new HashSet<>();
@@ -61,7 +59,7 @@ public class AirlinesDAOTest {
 
         Collection<Airlines> test1 = this.dao.getAirlinesByFilter(
                 AirlinesDAO.getFilterBuilder()
-                        .airlineName("TestName1" + this.runId)
+                        .airlineName("TestName1")
                         .build()
         );
 
@@ -77,7 +75,7 @@ public class AirlinesDAOTest {
     public void testGetByEmail() {
         Collection<Airlines> allTestEmails = this.dao.getAirlinesByFilter(
                 AirlinesDAO.getFilterBuilder()
-                        .airlineEmail(this.runId)
+                        .airlineEmail(null)
                         .build()
         );
 
@@ -91,7 +89,7 @@ public class AirlinesDAOTest {
 
         Collection<Airlines> test1 = this.dao.getAirlinesByFilter(
                 AirlinesDAO.getFilterBuilder()
-                        .airlineEmail("test1" + this.runId)
+                        .airlineEmail("test1")
                         .build()
         );
 

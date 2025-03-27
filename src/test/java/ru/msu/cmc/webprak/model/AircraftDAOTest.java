@@ -21,10 +21,9 @@ public class AircraftDAOTest {
     @BeforeEach
     public void setUp() {
         this.dao = DAOFactory.getInstance().getAircraftDAO();
-        this.runId = UUID.randomUUID().toString();
 
         this.aircraftTest1 = new Aircraft();
-        this.aircraftTest1.setModelName("TestName1" + this.runId);
+        this.aircraftTest1.setModelName("TestName1");
         this.aircraftTest1.setMaxRange(1.0);
         this.aircraftTest1.setCruisingSpeed(2.0);
         this.aircraftTest1.setMaxAltitude(3.0);
@@ -32,7 +31,7 @@ public class AircraftDAOTest {
 
 
         this.aircraftTest2 = new Aircraft();
-        this.aircraftTest2.setModelName("TestName2" + this.runId);
+        this.aircraftTest2.setModelName("TestName2");
         this.aircraftTest2.setMaxRange(6.0);
         this.aircraftTest2.setCruisingSpeed(5.0);
         this.aircraftTest2.setMaxAltitude(4.0);
@@ -47,7 +46,6 @@ public class AircraftDAOTest {
         this.dao.delete(this.aircraftTest2);
 
         this.dao = null;
-        this.runId = null;
         this.aircraftTest1 = null;
         this.aircraftTest2 = null;
     }
@@ -56,7 +54,7 @@ public class AircraftDAOTest {
     public void testGetByName() {
         Collection<Aircraft> all = this.dao.getAircraftByFilter(
                 AircraftDAO.getFilterBuilder()
-                        .modelName(this.runId)
+                        .modelName(null)
                         .build()
         );
         Set<Aircraft> expected = new HashSet<>();
@@ -69,7 +67,7 @@ public class AircraftDAOTest {
 
         Collection<Aircraft> onlyTest1 = this.dao.getAircraftByFilter(
                 AircraftDAO.getFilterBuilder()
-                        .modelName("TestName1" + this.runId)
+                        .modelName("TestName1")
                         .build()
         );
 
