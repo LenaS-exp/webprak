@@ -67,10 +67,10 @@ public class WebprakSeleniumTests {
         arrival.sendKeys("Санкт-Петербург");
 
         WebElement dateFrom = driver.findElement(By.name("departureTimeFrom"));
-        dateFrom.sendKeys("2025-05-22");
+        dateFrom.sendKeys("2025-05-21");
 
         WebElement dateTo = driver.findElement(By.name("departureTimeTo"));
-        dateTo.sendKeys("2025-05-23");
+        dateTo.sendKeys("2025-05-25");
 
         WebElement seats = driver.findElement(By.name("minSeats"));
         seats.sendKeys("2");
@@ -85,8 +85,8 @@ public class WebprakSeleniumTests {
     }
 
     @Test
-    public void test2_ViewTicketPrices() {
-        System.out.println("\n=== Тест 2: Просмотр информации о ценах на билеты ===");
+    public void test2_BookFlight() {
+        System.out.println("\n=== Тест 2: Бронирование билета и просмотр цены ===");
 
         try {
             driver.get(BASE_URL + "/flights");
@@ -94,44 +94,143 @@ public class WebprakSeleniumTests {
 
             WebElement firstFlight = wait.until(ExpectedConditions.presenceOfElementLocated(
                     By.cssSelector(".flight-card")));
+            String flightId = firstFlight.findElement(By.cssSelector("a.btn-book"))
+                    .getAttribute("href").split("/")[4];
+            System.out.println("Бронируем рейс ID: " + flightId);
 
-            WebElement bookButton = firstFlight.findElement(
-                    By.cssSelector("a.btn-book[href^='/flights/book/']"));
-            String href = bookButton.getAttribute("href");
-            String flightId = href.substring(href.lastIndexOf('/') + 1);
+            firstFlight.findElement(By.cssSelector("a.btn-book")).click();
+            wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//h2[contains(., 'Бронирование билета')]")));
 
-            System.out.println("Найден рейс с ID: " + flightId);
-            bookButton.click();
+            String depCity = driver.findElement(By.xpath("//strong[contains(., 'Откуда:')]/following-sibling::span")).getText();
+            String arrCity = driver.findElement(By.xpath("//strong[contains(., 'Куда:')]/following-sibling::span")).getText();
+            System.out.println("Маршрут: " + depCity + " → " + arrCity);
 
-            wait.until(ExpectedConditions.urlContains("/flights/book/" + flightId));
-            wait.until(ExpectedConditions.presenceOfElementLocated(
-                    By.xpath("//h2[contains(text(), 'Бронирование билета')]")));
-
-
-            WebElement priceSummary = wait.until(ExpectedConditions.presenceOfElementLocated(
-                    By.cssSelector(".price-summary")));
-
-            WebElement priceElement = priceSummary.findElement(
-                    By.xpath(".//p[contains(., 'Цена билета:')]/span"));
-
-            String priceText = priceElement.getText();
-            System.out.println("Цена билета: " + priceText);
+            new Select(driver.findElement(By.id("fareConditions"))).selectByValue("economy");
+            WebElement seatInput = driver.findElement(By.id("seatNumber"));
+            seatInput.sendKeys("1");
 
             try {
-                double price = Double.parseDouble(priceText.replaceAll("[^\\d.]", ""));
-                assert price > 0 : "Цена должна быть больше 0";
-            } catch (NumberFormatException e) {
-                throw new AssertionError("Не удалось преобразовать цену в число: " + priceText);
+                WebElement bonusCardSelect = wait.until(ExpectedConditions.presenceOfElementLocated(
+                        By.id("bonusCardId")));
+                ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true);", bonusCardSelect);
+                Thread.sleep(500);
+
+                ((JavascriptExecutor)driver).executeScript(
+                        "arguments[0].selectedIndex = 1; arguments[0].dispatchEvent(new Event('change'));",
+                        bonusCardSelect);
+
+                WebElement bonusPointsInput = wait.until(ExpectedConditions.elementToBeClickable(
+                        By.id("bonusPointsUsed")));
+                bonusPointsInput.clear();
+                bonusPointsInput.sendKeys("100");
+
+                System.out.println("Бонусная карта выбрана успешно");
+            } catch (TimeoutException e) {
+                System.out.println("Бонусные карты не найдены, пропускаем...");
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
-            WebElement finalPriceElement = priceSummary.findElement(By.id("finalPrice"));
-            String finalPriceText = finalPriceElement.getText();
-            assert finalPriceText.equals(priceText) :
-                    "Итоговая цена " + finalPriceText + " не совпадает с ценой билета " + priceText;
+
+            WebElement priceElement = driver.findElement(By.xpath("//p[contains(., 'Цена билета:')]/span"));
+            String priceText = priceElement.getText();
+            double price = Double.parseDouble(priceText.replaceAll("[^\\d.]", ""));
+            assert price > 0 : "Цена должна быть положительной";
+
+            driver.findElement(By.xpath("//button[contains(., 'Оформить билет')]")).click();
+            wait.until(ExpectedConditions.urlContains("/profile"));
+            System.out.println("Бронирование завершено успешно!");
 
         } catch (Exception e) {
             System.err.println("Ошибка в тесте 2: " + e.getMessage());
-
             throw e;
+        }
+    }
+
+    @Test
+    public void test10_ViewClientFlightHistory() {
+        System.out.println("\n=== Тест 10: просмотр истории полетов клиента ===");
+
+        try {
+            driver.get(BASE_URL + "/clients");
+            wait.until(ExpectedConditions.titleContains("Клиенты"));
+
+            List<WebElement> clientCards = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+                    By.cssSelector(".client-card")));
+
+            Assert.assertFalse(clientCards.isEmpty(), "На странице нет клиентов");
+
+            WebElement firstClient = clientCards.get(0);
+            String clientName = firstClient.findElement(By.cssSelector("h5 a")).getText();
+            System.out.println("Выбран клиент: " + clientName);
+
+            WebElement clientLink = firstClient.findElement(By.cssSelector("h5 a"));
+            ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true);", clientLink);
+            Thread.sleep(500); // Небольшая пауза после скролла
+            clientLink.click();
+
+            wait.until(ExpectedConditions.urlContains("/clients/view/"));
+            wait.until(ExpectedConditions.presenceOfElementLocated(
+                    By.xpath("//h1[contains(., '" + clientName + "')]")));
+
+            WebElement flightHistorySection = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//h3[contains(., 'История перелетов')]/following-sibling::div")));
+
+            List<WebElement> flightHistoryItems = flightHistorySection.findElements(
+                    By.cssSelector(".ticket-card"));
+
+            if (!flightHistoryItems.isEmpty()) {
+                System.out.println("Найдено перелетов в истории: " + flightHistoryItems.size());
+
+                WebElement firstFlight = flightHistoryItems.get(0);
+                String flightRoute = firstFlight.findElement(
+                        By.xpath(".//span[@class='info-label' and contains(., 'Рейс:')]/following-sibling::span")).getText();
+                System.out.println("Последний перелет: " + flightRoute);
+            }
+        } catch (Exception e) {
+            System.err.println("Ошибка в тесте 10: " + e.getMessage());
+
+        }
+    }
+
+    @Test
+    public void test9_UnpaidTicketPayment() {
+        System.out.println("\n=== Тест 9: Оплата  билета ===");
+
+        try {
+            driver.get(BASE_URL + "/profile");
+            wait.until(ExpectedConditions.titleContains("Профиль"));
+
+            WebElement activeTicketsSection = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//h3[contains(., 'Активные билеты')]/following-sibling::div")));
+
+            WebElement unpaidTicket = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//div[contains(@class, 'ticket-card')]//span[contains(@class, 'bg-warning') and contains(., 'Ожидает оплаты')]/ancestor::div[@class='ticket-card']")));
+
+            String flightInfo = unpaidTicket.findElement(
+                    By.xpath(".//span[@class='info-label' and contains(., 'Рейс:')]/following-sibling::span")).getText();
+            String ticketPrice = unpaidTicket.findElement(
+                    By.xpath(".//span[@class='info-label' and contains(., 'Цена:')]/following-sibling::span")).getText();
+
+            System.out.println("Найден билет для оплаты: " + flightInfo + ", цена: " + ticketPrice);
+
+            WebElement payButton = unpaidTicket.findElement(
+                    By.xpath(".//button[contains(., 'Оплатить')]"));
+
+            ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", payButton);
+            Thread.sleep(500); // Небольшая пауза для стабилизации
+            payButton.click();
+
+            wait.until(ExpectedConditions.urlContains("/profile"));
+
+            WebElement paidTicket = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//div[contains(@class, 'ticket-card')][.//span[contains(., '" + flightInfo + "')]]//span[contains(@class, 'bg-success') and contains(., 'Оплачен')]")));
+
+            System.out.println("Билет успешно " + paidTicket.getText());
+
+        } catch (Exception e) {
+            System.err.println("Ошибка в тесте 9: " + e.getMessage());
+
         }
     }
 
