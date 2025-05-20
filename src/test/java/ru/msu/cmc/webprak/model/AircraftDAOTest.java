@@ -54,7 +54,6 @@ public class AircraftDAOTest {
     public void testGetByName() {
         Collection<Aircraft> all = this.dao.getAircraftByFilter(
                 AircraftDAO.getFilterBuilder()
-                        .modelName(null)
                         .build()
         );
         Set<Aircraft> expected = new HashSet<>();

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link href="/base.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #4cc9f0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #2ecc71;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            background-color: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            min-height: 100vh;
+        }
+
+        .register-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .register-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .register-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem;
+            border-bottom: none;
+            text-align: center;
+        }
+
+        .card-header h4 {
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .card-body {
+            padding: 2rem;
+            background-color: white;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.15);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+            width: 100%;
+            font-size: 1.1rem;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 40px;
+            color: #aaa;
+        }
+
+        .alert-danger {
+            border-radius: 8px;
+            padding: 1rem;
+            background-color: #ffe6e6;
+            border: 1px solid #ffcccc;
+            color: #d32f2f;
+        }
+
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .register-container {
+                padding: 0 15px;
+            }
+
+            .card-body {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div th:replace="fragments::navbar"></div>
+<div class="container register-container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card register-card">
+                <div class="card-header">
+                    <h4><i class="fas fa-user-plus me-2"></i>Регистрация</h4>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/register}" method="post">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="firstName"><i class="fas fa-user me-2"></i>Имя</label>
+                                <input type="text" class="form-control" id="firstName" name="firstName" required placeholder="Введите ваше имя">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="lastName"><i class="fas fa-user me-2"></i>Фамилия</label>
+                                <input type="text" class="form-control" id="lastName" name="lastName" required placeholder="Введите вашу фамилию">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email"><i class="fas fa-envelope me-2"></i>Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required placeholder="example@mail.com">
+                            <i class="fas fa-envelope input-icon"></i>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone"><i class="fas fa-phone me-2"></i>Телефон</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" required placeholder="+7 (999) 123-45-67">
+                            <i class="fas fa-phone input-icon"></i>
+                        </div>
+                        <div class="form-group">
+                            <label for="password"><i class="fas fa-lock me-2"></i>Пароль</label>
+                            <input type="password" class="form-control" id="password" name="password" required placeholder="Не менее 6 символов">
+                            <i class="fas fa-eye input-icon" id="togglePassword" style="cursor: pointer;"></i>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-4">
+                            <i class="fas fa-user-plus me-2"></i>Зарегистрироваться
+                        </button>
+                    </form>
+                    <div th:if="${error}" class="alert alert-danger mt-3" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        <span th:text="${error}"></span>
+                    </div>
+                    <div th:if="${success}" class="alert alert-success mt-3" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <h1><span th:text="${success}">SUS</span></h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const passwordInput = document.getElementById('password');
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+    });
+
+
+    document.getElementById('phone').addEventListener('input', function(e) {
+        let x = e.target.value.replace(/\D/g, '').match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
+        e.target.value = !x[2] ? x[1] : '+' + x[1] + ' (' + x[2] + ') ' + x[3] + (x[4] ? '-' + x[4] : '') + (x[5] ? '-' + x[5] : '');
+    });
+</script>
+</body>
+</html>

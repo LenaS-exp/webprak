@@ -2,6 +2,7 @@ package ru.msu.cmc.webprak.model.dao.impl;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.springframework.stereotype.Repository;
 import ru.msu.cmc.webprak.model.HibernateConfiguration;
 import ru.msu.cmc.webprak.model.dao.TicketsDAO;
 import ru.msu.cmc.webprak.model.entity.Tickets;
@@ -16,10 +17,23 @@ import java.util.Collection;
 import java.util.List;
 
 @Transactional
+@Repository
 public class TicketsDAOImpl extends BaseDAOImpl<Tickets> implements TicketsDAO {
 
     public TicketsDAOImpl() {
         super(Tickets.class);
+    }
+
+    @Override
+    public void payTicket(Integer ticketId) {
+        Session session = HibernateConfiguration.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+        Tickets ticket = session.get(Tickets.class, ticketId);
+        if (ticket != null) {
+            ticket.setTicketStatus("PAID");
+            session.update(ticket);
+        }
+        session.getTransaction().commit();
     }
 
     @Override

@@ -40,6 +40,12 @@ group = 'ru.msu.cmc'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
@@ -75,7 +81,8 @@ dependencies {
 	implementation 'com.vladmihalcea:hibernate-types-55:2.15.1'
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-guava:2.13.2'
 	implementation 'org.json:json:20220320'
-	compileOnly 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok:1.18.24'
+	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 	compileOnly 'com.fasterxml.jackson.core:jackson-databind'
 	compileOnly 'com.bazarnazar:pgjson'
 	runtimeOnly 'org.postgresql:postgresql'
@@ -94,8 +101,6 @@ dependencies {
 
 tasks.withType(Test) {
 	useJUnitPlatform()
+	useTestNG()
 
-	testLogging {     // This is for logging and can be removed.
-		events("passed", "skipped", "failed")
-	}
 }

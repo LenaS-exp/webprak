@@ -2,6 +2,7 @@ package ru.msu.cmc.webprak.model.dao.impl;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.springframework.stereotype.Repository;
 import ru.msu.cmc.webprak.model.HibernateConfiguration;
 import ru.msu.cmc.webprak.model.dao.BonusCardDAO;
 import ru.msu.cmc.webprak.model.entity.BonusCard;
@@ -16,6 +17,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Transactional
+@Repository
 public class BonusCardDAOImpl extends BaseDAOImpl<BonusCard> implements BonusCardDAO {
 
     public BonusCardDAOImpl() {
@@ -31,6 +33,11 @@ public class BonusCardDAOImpl extends BaseDAOImpl<BonusCard> implements BonusCar
         Root<BonusCard> root = criteriaQuery.from(BonusCard.class);
 
         List<Predicate> predicates = new ArrayList<>();
+
+        if (filter.getUserId() != null) {
+            Integer passangerId = filter.getUserId();
+            predicates.add(builder.equal(root.get("passangerId"), passangerId));
+        }
 
         if (filter.getTotalkmMin() != null) {
             Integer totalkmMin = filter.getTotalkmMin();

@@ -2,12 +2,14 @@ package ru.msu.cmc.webprak.model.dao.impl;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+
 import ru.msu.cmc.webprak.model.HibernateConfiguration;
 import ru.msu.cmc.webprak.model.dao.BaseDAO;
 
 import javax.transaction.Transactional;
 
 @Transactional
+
 public class BaseDAOImpl<SomeEntity> implements BaseDAO<SomeEntity> {
     Class<SomeEntity> entityClass;
 

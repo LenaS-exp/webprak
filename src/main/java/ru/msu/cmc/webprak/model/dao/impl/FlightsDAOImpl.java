@@ -2,6 +2,7 @@ package ru.msu.cmc.webprak.model.dao.impl;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.springframework.stereotype.Repository;
 import ru.msu.cmc.webprak.model.HibernateConfiguration;
 import ru.msu.cmc.webprak.model.dao.FlightsDAO;
 import ru.msu.cmc.webprak.model.entity.Flights;
@@ -17,6 +18,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Transactional
+@Repository
 public class FlightsDAOImpl extends BaseDAOImpl<Flights> implements FlightsDAO {
 
     public FlightsDAOImpl() {

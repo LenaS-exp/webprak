@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Бронирование билета</title>
+    <link href="/base.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #4cc9f0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+        }
+
+        body {
+            background-color: #f8fafc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark-color);
+        }
+
+        .booking-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 2px;
+        }
+
+        h4 {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin: 25px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.15);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .price-summary {
+            background: #f9fafb;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+            border: 1px solid #eaeaea;
+        }
+
+        .price-summary h5 {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #ddd;
+            padding-bottom: 10px;
+        }
+
+        .price-summary p {
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+        }
+
+        .price-summary strong {
+            color: #444;
+            min-width: 180px;
+            display: inline-block;
+        }
+
+        .flight-info {
+            background: #f5f7ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .flight-info p {
+            margin-bottom: 8px;
+        }
+
+        .flight-info strong {
+            color: var(--secondary-color);
+            min-width: 120px;
+            display: inline-block;
+        }
+
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .booking-container {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+
+        .fa-plane, .fa-building, .fa-chair, .fa-wallet {
+            color: var(--primary-color);
+            margin-right: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .booking-container {
+                padding: 20px;
+                margin: 15px;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div th:replace="fragments::navbar"></div>
+
+<div class="container booking-container">
+    <h2><i class="fas fa-ticket-alt"></i> Бронирование билета</h2>
+
+    <div class="flight-info">
+        <h4><i class="fas fa-plane"></i> Информация о рейсе</h4>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong><i class="fas fa-map-marker-alt"></i> Откуда:</strong>
+                    <span th:text="${flight.depAirport.airportCity}"></span>
+                </p>
+                <p><strong><i class="fas fa-clock"></i> Вылет:</strong>
+                    <span th:text="${flight.TimeDep}"></span>
+                </p>
+            </div>
+            <div class="col-md-6">
+                <p><strong><i class="fas fa-map-marker-alt"></i> Куда:</strong>
+                    <span th:text="${flight.arrAirport.airportCity}"></span>
+                </p>
+                <p><strong><i class="fas fa-clock"></i> Прилет:</strong>
+                    <span th:text="${flight.TimeArr}"></span>
+                </p>
+            </div>
+        </div>
+        <p><strong><i class="fas fa-building"></i> Авиакомпания:</strong> <span th:text="${flight.airlineId.airlineName}"></span></p>
+        <p><strong><i class="fas fa-plane"></i> Самолет:</strong> <span th:text="${flight.aircraftId.ModelName}"></span></p>
+        <p><strong><i class="fas fa-chair"></i> Свободных мест:</strong> <span th:text="${flight.availableSeatNum}"></span></p>
+    </div>
+
+    <!-- Форма бронирования -->
+    <form th:action="@{'/flights/book/' + ${flight.id}}" method="post">
+        <div class="form-group">
+            <label for="fareConditions"><i class="fas fa-star"></i> Класс обслуживания</label>
+            <select class="form-control" id="fareConditions" name="fareConditions">
+                <option value="economy">Эконом-класс</option>
+                <option value="business">Бизнес-класс</option>
+                <option value="first">Первый класс</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="seatNumber"><i class="fas fa-chair"></i> Номер места (от 1 до <span th:text="${flight.availableSeatNum}"></span>)</label>
+            <input type="number" class="form-control" id="seatNumber" name="seatNumber"
+                   min="1" th:max="${flight.availableSeatNum}" required>
+        </div>
+
+        <!-- Бонусные карты -->
+        <div class="form-group" th:if="${not #lists.isEmpty(userBonusCards)}">
+            <label for="bonusCardId"><i class="fas fa-credit-card"></i> Бонусная карта</label>
+            <select class="form-control" id="bonusCardId" name="bonusCardId">
+                <option value="">Не использовать бонусную карту</option>
+                <option th:each="card : ${userBonusCards}"
+                        th:value="${card.id}"
+                        th:data-max-points="${card.totalkm - card.usedkm}"
+                        th:text="${card.airlineId.airlineName} + ' (Доступно баллов: ' + ${card.totalkm - card.usedkm} + ')'">
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group" th:if="${not #lists.isEmpty(userBonusCards)}">
+            <label for="bonusPointsUsed"><i class="fas fa-coins"></i> Использовать бонусных баллов</label>
+            <input type="number" class="form-control" id="bonusPointsUsed"
+                   name="bonusPointsUsed" min="0" value="0" disabled>
+            <small class="form-text text-muted" id="pointsHelp">Выберите бонусную карту для использования баллов</small>
+            <div class="invalid-feedback" id="pointsError">
+                Нельзя использовать больше баллов, чем доступно на карте
+            </div>
+        </div>
+
+
+        <!-- Итоговая цена -->
+        <div class="price-summary">
+            <h5><i class="fas fa-wallet"></i> Итоговая стоимость</h5>
+            <p id="aboba"><strong>Цена билета:</strong> <span th:text="${#numbers.formatDecimal(ticketPrice, 1, 2)} + ' руб.'"></span></p>
+            <p th:if="${not #lists.isEmpty(userBonusCards)}">
+                <strong>Использовано бонусов:</strong>
+                <span id="usedPoints">0</span> баллов
+            </p>
+            <p><strong>Итого к оплате:</strong>
+                <span id="finalPrice" th:text="${#numbers.formatDecimal(ticketPrice, 1, 2)} + ' руб.'"></span>
+            </p>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block mt-3">
+            <i class="fas fa-check-circle"></i> Оформить билет
+        </button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        const bonusCardSelect = $('#bonusCardId');
+        const bonusPointsInput = $('#bonusPointsUsed');
+        const pointsHelp = $('#pointsHelp');
+        const pointsError = $('#pointsError');
+
+
+        bonusCardSelect.on('change', function() {
+            const selectedCard = $(this).find('option:selected');
+            const maxPoints = selectedCard.data('max-points') || 0;
+
+            if (selectedCard.val() === "") {
+
+                bonusPointsInput.val(0).prop('disabled', true);
+                pointsHelp.text("Выберите бонусную карту для использования баллов");
+                pointsError.hide();
+            } else {
+
+                bonusPointsInput.prop('disabled', false)
+                    .attr('max', maxPoints)
+                    .val(0);
+                pointsHelp.text(`Максимум можно использовать: ${maxPoints} баллов`);
+                pointsError.hide();
+            }
+
+            updateFinalPrice();
+        });
+
+        bonusPointsInput.on('input', function() {
+            const selectedCard = bonusCardSelect.find('option:selected');
+            const maxPoints = selectedCard.data('max-points') || 0;
+            const enteredPoints = parseInt($(this).val()) || 0;
+
+            if (enteredPoints > maxPoints) {
+                pointsError.show();
+                $(this).addClass('is-invalid');
+            } else {
+                pointsError.hide();
+                $(this).removeClass('is-invalid');
+            }
+
+            updateFinalPrice();
+        });
+
+
+        $('#bookingForm').on('submit', function(e) {
+            const selectedCard = bonusCardSelect.find('option:selected');
+            const maxPoints = selectedCard.data('max-points') || 0;
+            const enteredPoints = parseInt(bonusPointsInput.val()) || 0;
+
+            if (selectedCard.val() !== "" && enteredPoints > maxPoints) {
+                e.preventDefault();
+                pointsError.show();
+                bonusPointsInput.addClass('is-invalid');
+                bonusPointsInput.focus();
+            }
+        });
+
+
+        function updateFinalPrice() {
+            const bonusPoints = parseInt(bonusPointsInput.val()) || 0;
+            const ticketPrice = parseFloat([[${ticketPrice}]]);
+            const finalPrice = Math.max(0, ticketPrice - bonusPoints);
+
+            $('#usedPoints').text(bonusPoints);
+            $('#finalPrice').text(finalPrice.toFixed(2) + ' руб.');
+        }
+    });
+</script>
+</body>
+</html>
